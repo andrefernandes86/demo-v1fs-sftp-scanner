@@ -1,0 +1,6 @@
+Subsystem sftp internal-sftp
+Match User sftpuser
+    ChrootDirectory /var/sftp
+    ForceCommand internal-sftp
+    AllowTcpForwarding no
+    X11Forwarding no
