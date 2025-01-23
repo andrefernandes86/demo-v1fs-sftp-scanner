@@ -3,5 +3,5 @@
 # Start the SSHD server for SFTP
 /usr/sbin/sshd -D &
 
-# Start the file scanning handler
-/app/scan-handler
+# Run the Python file handler
+python3 /app/scan_handler.py
