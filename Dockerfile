@@ -1,5 +1,4 @@
-# Base image
-FROM golang:1.20-alpine
+FROM python:3.11-alpine
 
 # Install necessary tools
 RUN apk add --no-cache bash openssh nfs-utils git
@@ -7,17 +6,14 @@ RUN apk add --no-cache bash openssh nfs-utils git
 # Set up directories for the application
 WORKDIR /app
 
-# Clone the Trend Micro SDK repository
-RUN git clone https://github.com/trendmicro/tm-v1-fs-golang-sdk.git /app/tm-v1-fs-golang-sdk
+# Clone the Trend Micro Python SDK repository
+RUN git clone https://github.com/trendmicro/tm-v1-fs-python-sdk.git /app/tm-v1-fs-python-sdk
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r /app/tm-v1-fs-python-sdk/requirements.txt
 
 # Copy the custom handler script
-COPY ./scan-handler.go /app
-
-# Install application dependencies and build the application
-RUN cd /app && \
-    go mod init sftp-scanner && \
-    go mod tidy && \
-    go build -o scan-handler scan-handler.go
+COPY ./scan_handler.py /app
 
 # Install and configure OpenSSH for SFTP
 RUN mkdir -p /var/sftp/uploads && \
