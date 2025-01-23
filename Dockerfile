@@ -1,3 +1,4 @@
+# Base image
 FROM golang:1.20-alpine
 
 # Install necessary tools
@@ -12,12 +13,11 @@ RUN git clone https://github.com/trendmicro/tm-v1-fs-golang-sdk.git /app/tm-v1-f
 # Copy the custom handler script
 COPY ./scan-handler.go /app
 
-# Install application dependencies
-RUN cd /app/tm-v1-fs-golang-sdk && \
-    go build && \
-    cd /app && \
+# Install application dependencies and build the application
+RUN cd /app && \
     go mod init sftp-scanner && \
-    go mod tidy
+    go mod tidy && \
+    go build -o scan-handler scan-handler.go
 
 # Install and configure OpenSSH for SFTP
 RUN mkdir -p /var/sftp/uploads && \
@@ -32,7 +32,7 @@ RUN mkdir -p /var/sftp/uploads && \
 # Copy the SSHD configuration file
 COPY sshd_config /etc/ssh/sshd_config
 
-# Create entrypoint script
+# Copy the entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
