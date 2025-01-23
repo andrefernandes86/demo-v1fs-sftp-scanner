@@ -17,7 +17,8 @@ COPY ./scan-handler.go /app
 RUN cd /app && \
     go mod init sftp-scanner && \
     go mod tidy && \
-    go build -o scan-handler scan-handler.go
+    cd /app/tm-v1-fs-golang-sdk && go build && \
+    cd /app && go build -o scan-handler scan-handler.go
 
 # Install and configure OpenSSH for SFTP
 RUN mkdir -p /var/sftp/uploads && \
