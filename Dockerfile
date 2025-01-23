@@ -10,7 +10,7 @@ WORKDIR /app
 RUN git clone https://github.com/trendmicro/tm-v1-fs-python-sdk.git /app/tm-v1-fs-python-sdk
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r /app/tm-v1-fs-python-sdk/requirements.txt
+RUN pip install requirements.txt
 
 # Copy the custom handler script
 COPY ./scan_handler.py /app
